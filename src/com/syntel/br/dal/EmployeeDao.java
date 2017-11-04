@@ -7,7 +7,7 @@ public interface EmployeeDao {
 boolean login(String username,String passwordHash);//To login with given credentials
 boolean isUserSpoc(String username);//determine whether employee is spoc or not
 
-Employee viewEmployeeDetails(int employeeId);//to view all employee details
+Employee viewEmployeeDetails(int employeeId);//to view a specific employee details
 
 //boolean viewOpenings(Employee e);
 //applyBuddy(Employee e);
