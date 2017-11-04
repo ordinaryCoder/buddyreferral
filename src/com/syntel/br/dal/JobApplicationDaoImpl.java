@@ -21,10 +21,10 @@ public class JobApplicationDaoImpl implements JobApplicationDao{
 		ResultSet rs = null;
 		JobApplication jobApplication = null;
 
-		System.out.println("Logger >>> inside Login Method ");
+		System.out.println("Logger >>> inside showJobApplicationDetails Method @JobApplicationDao  ");
 		try {
 			con=DBUtil.getConnection();
-			ps=con.prepareStatement("select * from account where applicationID=?");
+			ps=con.prepareStatement("select applicationID,jobCode,employeeID,buddyName,resume,status from JobApplication where applicationID=?");
 			ps.setInt(1, applicationID);
 			rs=ps.executeQuery();
 			if(rs.next())
@@ -44,66 +44,57 @@ public class JobApplicationDaoImpl implements JobApplicationDao{
 	public boolean deleteApplication(int applicationID) {
 		Connection con=null;
 		PreparedStatement ps =null;
-		ResultSet rs = null;
-		JobApplication jobApplication = null;
-
-		System.out.println("Logger >>> inside Login Method ");
+		boolean isDeleted = false;
+		System.out.println("Logger >>> inside delete Application method @ JobApplicationDao");
 		try {
 			
 			con=DBUtil.getConnection();
-			ps=con.prepareStatement("Delete from account where applicationID=?");
+			ps=con.prepareStatement("Delete from JobApplication where applicationID=?");
 			ps.setInt(1, applicationID);
-			System.out.println("Logger >>> inside application Controiller:" + applicationID);
 			int del = ps.executeUpdate();
-		    String resultString = "application deleted successful : "+ applicationID ;
-	
-		    
+			if(del == 1)
+				isDeleted = true;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally
 		{
 			DBUtil.close(con);
 		}
-	    return true;
+	    return isDeleted;
 	}
 
 	@Override
-	public boolean editStatus(int applicationID) {
+	public boolean editStatus(JobApplication ja) {
 		Connection con=null;
 		PreparedStatement ps =null;
 		ResultSet rs = null;
-		JobApplication jobApplication = null;
+//		JobApplication jobApplication = null;
+		boolean isEditStatusSuccess = false;
 
-		System.out.println("Logger >>> inside Login Method ");
+		System.out.println("Logger >>> inside edit status Method @ JobApplicationDao");
 		try {
 			con=DBUtil.getConnection();
-			ps=con.prepareStatement("select * from account where accno=?");
-			ps.setInt(1, applicationID);
-			rs=ps.executeQuery();
-			if(rs.next())
-			{
-				jobApplication = new JobApplication();
-				System.out.println("Logger >>>  " + jobApplication);
-			}
-		
-			ps=con.prepareStatement("Update account SET balance = ? where accno=?");
-//			ps.setDouble(1, bal);
-//			ps.setInt(2, accNo);
-//			System.out.println("inside aCCCOUNTdAOimPL Controller:" + accNo);
-			int update = ps.executeUpdate();
+			ps=con.prepareStatement("Update jobappplication SET status = ? where applicationID=?");
+			ps.setString(1, ja.getStatus());
+			ps.setInt(2, ja.getApplicationID());
+			int editStatusResult = ps.executeUpdate();
+			if(editStatusResult == 1)
+				isEditStatusSuccess = true;
 			
-//		     resultString = "application id "+applicationID+ "changed field  : "+ amount;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally
 		{
 			DBUtil.close(con);
 		}
-	    return true;
+	    return isEditStatusSuccess;
 	}
 
 	@Override
 	public String showStatus(int applicationID) {
+		//Method need not to be implemented in DAO Layer.
+		//Same functionality can be achieved by showApplicationDetails(int applicationID) method 
 		return null;
 	}
 
