@@ -9,6 +9,7 @@ public class JobApplication implements Serializable{
 	private String buddyName;
 	private String resume;
 	private String status;
+	private String isStatusFinal;
 	
 	
 	public JobApplication(){
@@ -16,7 +17,7 @@ public class JobApplication implements Serializable{
 	}
 	
 	public JobApplication(int applicationID, int jobCode, int employeeID,
-			String buddyName, String resume, String status) {
+			String buddyName, String resume, String status,String isStatusFinal) {
 		super();
 		this.applicationID = applicationID;
 		this.jobCode = jobCode;
@@ -24,6 +25,7 @@ public class JobApplication implements Serializable{
 		this.buddyName = buddyName;
 		this.resume = resume;
 		this.status = status;
+		this.isStatusFinal = isStatusFinal;
 	}
 	
 	
@@ -68,6 +70,14 @@ public class JobApplication implements Serializable{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getIsStatusFinal() {
+		return isStatusFinal;
+	}
+
+	public void setIsStatusFinal(String isStatusFinal) {
+		this.isStatusFinal = isStatusFinal;
 	} 
 	
 	
