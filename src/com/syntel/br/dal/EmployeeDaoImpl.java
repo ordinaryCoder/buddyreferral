@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.syntel.br.models.Employee;
-import com.syntel.br.service.*;
 import com.syntel.br.util.DBUtil;
 
 public class EmployeeDaoImpl implements EmployeeDao {

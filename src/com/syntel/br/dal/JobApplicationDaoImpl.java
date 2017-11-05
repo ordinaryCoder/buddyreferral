@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
-import com.syntel.br.models.*;
 import com.syntel.br.models.*;
 import com.syntel.br.util.DBUtil;
 
@@ -24,12 +22,12 @@ public class JobApplicationDaoImpl implements JobApplicationDao{
 		System.out.println("Logger >>> inside showJobApplicationDetails Method @JobApplicationDao  ");
 		try {
 			con=DBUtil.getConnection();
-			ps=con.prepareStatement("select applicationID,jobCode,employeeID,buddyName,resume,status from JobApplication where applicationID=?");
+			ps=con.prepareStatement("select applicationID,jobCode,employeeID,buddyName,resume,status,isStatusFinal from JobApplication where applicationID=?");
 			ps.setInt(1, applicationID);
 			rs=ps.executeQuery();
 			if(rs.next())
 			{
-				jobApplication = new JobApplication(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6));
+				jobApplication = new JobApplication(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6),rs.getString(7));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -126,21 +124,28 @@ public class JobApplicationDaoImpl implements JobApplicationDao{
 	}
 
 	@Override
-	public ArrayList<JobApplication> showAllApplicationDetails() {
+	public ArrayList<JobApplication> showAllApplicationDetails(String isStatusFinal) {
 		//Method returns a list of all available job openings.
 		ArrayList<JobApplication> jobApplications = new ArrayList<JobApplication>(5);
 		Connection con=null;
 		PreparedStatement ps =null;
 		ResultSet rs = null;
 		JobApplication jobApplication = null;
+		String whereQueryString = null;
+		switch(isStatusFinal)
+		{
+		case "All":whereQueryString=null;break;
+		case "true":whereQueryString="where isStatusFinal = 'true'";break;
+		case "false":whereQueryString="where isStatusFinal = 'false'";break;
+		}
 		System.out.println("Logger >>> inside Login Method ");
 		try {
 			con=DBUtil.getConnection();
-			ps=con.prepareStatement("select applicationID,jobCode,employeeID,buddyName,resume,status from JobApplication");
+			ps=con.prepareStatement("select applicationID,jobCode,employeeID,buddyName,resume,status,isStatusFinal from JobApplication"+whereQueryString);
 			rs=ps.executeQuery();
 			while(rs.next())
 			{
-				jobApplication = new JobApplication();
+				jobApplication = new JobApplication(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6),rs.getString(7));
 				jobApplications.add(jobApplication);
 //				System.out.println("Logger >>>  " + jobApplication);
 			} 
